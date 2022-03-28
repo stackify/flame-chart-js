@@ -241,17 +241,21 @@ export class InteractionsEngine extends EventEmitter {
     }
 }
 
-class SeparatedInteractionsEngine extends EventEmitter {
-    static count = 0;
+const IdGenerator = (() => {
+    let count = 0;
+    return {
+        getId: function() {
+            return count++;
+        }
+    };
+})();
 
-    static getId() {
-        return SeparatedInteractionsEngine.count++;
-    }
+class SeparatedInteractionsEngine extends EventEmitter {    
 
     constructor(parent, renderEngine) {
         super();
 
-        this.id = SeparatedInteractionsEngine.getId();
+        this.id = IdGenerator.getId();
         this.parent = parent;
         this.renderEngine = renderEngine;
 
